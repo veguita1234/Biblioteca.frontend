@@ -1,0 +1,28 @@
+.PaginaPrincipal {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 150vh;
+    background-color: red;
+
+    .encabezado {
+        width: 100%;
+        height: 10vh;
+        border: 1px solid;
+        margin-top: 5vh;
+        display: flex;
+        flex-direction: column;
+        align-items: end;
+        justify-content: center;
+        
+
+        .perfil {
+            height: 8vh;
+            border: 1px solid;
+            width: 10vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+}
