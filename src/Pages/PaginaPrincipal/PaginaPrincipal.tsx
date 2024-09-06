@@ -33,7 +33,6 @@ const PaginaPrincipal: React.FC = () => {
                 </div>
             </div>
 
-            {/* Modal para el Login */}
             <Modal
                 isOpen={isModalOpen}
                 onRequestClose={closeModal}
@@ -41,7 +40,7 @@ const PaginaPrincipal: React.FC = () => {
                 style={{
                     overlay: {
                         backgroundColor: 'rgba(0, 0, 0, 0.75)',
-                        zIndex: 1000 // Asegura que el overlay esté encima de otros elementos
+                        zIndex: 1000
                     },
                     content: {
                         top: '50%',
@@ -52,18 +51,16 @@ const PaginaPrincipal: React.FC = () => {
                         transform: 'translate(-50%, -50%)',
                         padding: '20px',
                         width: '400px',
-
-                        position: 'relative', // Asegura que el botón se posicione en relación con el modal
-                        borderRadius: '10px', // Bordes suaves para el modal
-                        overflow: 'visible', // Permite que el contenido se desborde si es necesario
-                        
+                        position: 'relative',
+                        borderRadius: '10px',
+                        overflow: 'visible',
                     }
                 }}
             >
                 <button onClick={closeModal} style={{
                     position: 'absolute',
-                    top: '-10px', // Ajusta la posición según el tamaño del botón
-                    right: '-10px', // Ajusta la posición según el tamaño del botón
+                    top: '-10px',
+                    right: '-10px',
                     border: 'none',
                     background: 'white',
                     borderRadius: '50%',
@@ -76,9 +73,9 @@ const PaginaPrincipal: React.FC = () => {
                     alignItems: 'center',
                     justifyContent: 'center',
                     color: 'black',
-                    zIndex: 1100 // Asegura que el botón se superponga al contenido del modal
+                    zIndex: 1100
                 }}>
-                    &#x2715; {/* Representa la "X" de cierre */}
+                    &#x2715;
                 </button>
                 <Login />
             </Modal>
