@@ -1,6 +1,12 @@
+import './Login.css'
+
 const Login:React.FC = () => {
     return (
-        <div>ola</div>
+        <div className="modal">
+            <div>
+
+            </div>
+        </div>
     );
 };
 
