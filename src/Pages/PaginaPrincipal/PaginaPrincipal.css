@@ -1,28 +1,34 @@
 .PaginaPrincipal {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     width: 100%;
-    height: 150vh;
+
+    gap: 8em;
 
 
     .encabezado {
         width: 100%;
         height: 10vh;
-        border: 1px solid;
         margin-top: 5vh;
         display: flex;
-        flex-direction: column;
-        align-items: end;
-        justify-content: center;
+        flex-direction: row;
+        align-items: center;
+        justify-content: end;
         
 
         .perfil {
-            height: 8vh;
-            border: 1px solid;
+            height: 10vh;
             width: 10vw;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
+    }
+
+    .cuerpo {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr); /* 5 columnas de igual tamaño */
+        gap: 16px; /* Espacio entre los elementos */
+        padding: 20px; /* Espaciado interno del contenedor */
     }
 }

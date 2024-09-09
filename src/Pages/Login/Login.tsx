@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import './Login.css';
 
-const Login: React.FC = () => {
+interface LoginProps {
+    closeModal: () => void;
+    onLoginSuccess: (name: string) => void;
+}
+
+const Login: React.FC<LoginProps> = ({ closeModal, onLoginSuccess }) => {
     const [isLogin, setIsLogin] = useState(true);
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [formData, setFormData] = useState({
         userName: '',
         password: '',
@@ -11,11 +15,12 @@ const Login: React.FC = () => {
         lastName: '',
         email: '',
         dni: '',
-        tipo: '' // Campo tipo editable para inicio de sesión
+        tipo: ''
     });
 
     const [errors, setErrors] = useState({
         userName: '',
+        password: '',
         name: '',
         lastName: '',
         email: '',
@@ -25,7 +30,6 @@ const Login: React.FC = () => {
     const switchToRegister = (event: React.MouseEvent<HTMLAnchorElement>) => {
         event.preventDefault();
         setIsLogin(false);
-        // Resetea el tipo al cambiar a registro
         setFormData({
             ...formData,
             tipo: 'USUARIO'
@@ -35,27 +39,24 @@ const Login: React.FC = () => {
     const switchToLogin = (event: React.MouseEvent<HTMLAnchorElement>) => {
         event.preventDefault();
         setIsLogin(true);
-        // Limpiar el tipo al cambiar a inicio de sesión
         setFormData({
             ...formData,
             tipo: ''
         });
     };
 
-    // Manejador de cambios en los inputs
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Manejar cambios para ambos tipos de elementos
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
         });
-        // Limpia el error cuando el usuario empieza a corregir el campo
         setErrors({
             ...errors,
             [e.target.name]: ''
         });
     };
 
-    // Función para iniciar sesión
     const handleLogin = async () => {
         try {
             const response = await fetch('http://localhost:5243/api/User/login', {
@@ -71,12 +72,24 @@ const Login: React.FC = () => {
             const result = await response.json();
 
             if (response.ok) {
+                console.log(`Tipo: ${formData.tipo}, Nombre de Usuario: ${formData.userName}`);
                 alert(result.Message || 'Inicio de sesión exitoso.');
-                // Aquí puedes almacenar el token o redirigir a otra página
+
+                // Guarda el userName en localStorage
+                localStorage.setItem('user', JSON.stringify({
+                    userName: formData.userName,
+                    tipo: formData.tipo
+                }));
+
+                onLoginSuccess(formData.userName); 
+                if (formData.tipo === 'USUARIO') {
+                    // Lógica para usuario normal
+                } else if (formData.tipo === 'ADMIN') {
+                    // Lógica para administrador
+                }
+                closeModal();
             } else {
-                // Extrae el mensaje del backend y muestra la alerta
-                const errorMsg = result.message || 'Error al iniciar sesión.';
-                alert(errorMsg);
+                alert(result.message || 'Error al iniciar sesión.');
             }
         } catch (error) {
             console.error('Error al iniciar sesión:', error);
@@ -84,7 +97,6 @@ const Login: React.FC = () => {
         }
     };
 
-    // Función para registrar un nuevo usuario
     const handleRegister = async () => {
         try {
             const response = await fetch('http://localhost:5243/api/User/register', {
@@ -104,22 +116,18 @@ const Login: React.FC = () => {
             const result = await response.json();
 
             if (response.ok) {
-                // Limpiar el mensaje de error si la solicitud es exitosa
-                setErrorMessage(null);
                 alert(result.Message || 'Registro exitoso.');
-                setFormData({
-                    userName: '',
-                    password: '',
-                    name: '',
-                    lastName: '',
-                    email: '',
-                    dni: '',
-                    tipo: ''
-                });
+
+                // Guarda el userName en localStorage
+                localStorage.setItem('user', JSON.stringify({
+                    userName: formData.userName,
+                    tipo: formData.tipo
+                }));
+
+                onLoginSuccess(formData.userName); // Pasa el userName al componente principal
+                closeModal();
             } else {
-                // Extrae el mensaje del backend y muestra la alerta
-                const errorMsg = result.message || 'Error al registrarse.';
-                alert(errorMsg);
+                alert(result.message || 'Error al registrarse.');
             }
         } catch (error) {
             console.error('Error al registrarse:', error);
@@ -135,12 +143,17 @@ const Login: React.FC = () => {
 
                     <div className='forumularioinicio'>
                         <label style={{ width: "8vw" }}>Tipo</label>
-                        <input
+                        <select
                             name="tipo"
                             value={formData.tipo}
                             onChange={handleChange}
+                        
                             style={{ textTransform: "uppercase" }}
-                        />
+                        >
+                            <option value="" disabled>Selecciona</option>
+                            <option value="USUARIO">USUARIO</option>
+                            <option value="ADMIN">ADMIN</option>
+                        </select>
                     </div>
                     <div className='forumularioinicio'>
                         <label>Nombre de Usuario</label>
@@ -195,6 +208,7 @@ const Login: React.FC = () => {
                         <label>Email</label>
                         <input
                             name="email"
+                            type="email"
                             value={formData.email}
                             onChange={handleChange}
                             style={{ width: "15vw" }}
@@ -224,11 +238,12 @@ const Login: React.FC = () => {
                             onChange={handleChange}
                             style={{ width: "15vw" }}
                         />
+                        {errors.password && <div style={{ color: 'red', gridColumn: 'span 2' }}>{errors.password}</div>}
                     </div>
-                    <button style={{ marginTop: "6vh" }} onClick={handleRegister}>Registrarse</button>
-                    <span style={{ marginTop: "4vh" }}>
+                    <button style={{ marginTop: "3vh" }} onClick={handleRegister}>Registrarse</button>
+                    <span style={{ marginTop: "2vh" }}>
                         <span>¿Ya tiene una cuenta? </span>
-                        <span><a href="#" onClick={switchToLogin}>Iniciar Sesión</a></span>
+                        <span><a href='/' onClick={switchToLogin}>Inicie sesión</a></span>
                     </span>
                 </>
             )}
