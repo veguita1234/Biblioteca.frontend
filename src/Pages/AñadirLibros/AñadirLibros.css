@@ -1,0 +1,9 @@
+.body {
+    background-image: url('/public/background.png');
+    border: 1px solid;
+}
+
+.cuerpoañadir {
+    
+    height: 78vh;
+}

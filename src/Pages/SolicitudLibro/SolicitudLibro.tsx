@@ -110,10 +110,10 @@ const SolicitudLibro: React.FC = () => {
     };
 
     return (
-        <div>
-            <Link to='/paginaprincipal'><FaLongArrowAltLeft style={{ fontSize: "60px" }} /></Link>
+        <div className='cuerposolicitud'>
+            <Link to='/paginaprincipal'><FaLongArrowAltLeft style={{ fontSize: "60px",color:"white" }} /></Link>
             <div style={{ display: "flex", justifyContent: "center" }}>
-                <div style={{ border: "1px solid", display: "flex", flexDirection: "column", width: "50vw", marginTop: "10vh", gap: "3em" }}>
+                <div style={{ padding:"20px",borderRadius:"30px",backgroundColor:"white", display: "flex", flexDirection: "column", width: "50vw", marginTop: "10vh", gap: "3em" }}>
                     <span style={{ fontSize: "30px" }}>Devolver Libro</span>
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1em" }}>
                         <label>Tipo de Solicitud</label>

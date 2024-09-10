@@ -181,7 +181,15 @@ const PaginaPrincipal: React.FC = () => {
     return (
         <div className='PaginaPrincipal'>
             <div className='encabezado'>
-                <div style={{ position: 'relative', width: '30vw' ,marginRight:"10vw"}}>
+            <div style={{height:"5vh",width:"9vw",display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"center"}}>
+                {isAdmin && (
+                        <Link style={{textDecoration:"none",color:"blue"}} to='/añadir-libros'>
+                            <FaBookMedical style={{fontSize:"20px"}}/>
+                            <span style={{fontSize:"20px"}}>Añadir Libros</span>
+                        </Link>
+                    )}
+                </div>
+                <div style={{ position: 'relative', width: '30vw' }}>
                     <input
                         type="text"
                         placeholder="Titulo , autor, genero"
@@ -206,15 +214,9 @@ const PaginaPrincipal: React.FC = () => {
                         size={20}
                     />
                 </div>
-                <div style={{height:"5vh",width:"9vw",display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"center"}}>
-                {isAdmin && (
-                        <Link style={{textDecoration:"none",color:"blue"}} to='/añadir-libros'>
-                            <FaBookMedical style={{fontSize:"20px"}}/>
-                            <span style={{fontSize:"20px"}}>Añadir Libros</span>
-                        </Link>
-                    )}
-                </div>
-                <div style={{height:"5vh",width:"9vw",display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"center"}}>
+                
+                <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center",gap:"2em"}}>
+                <div style={{ height:"5vh",width:"9vw",display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"center"}}>
                     <Link 
                         style={{textDecoration:"none",color:"blue", pointerEvents: isReturnLinkEnabled ? 'auto' : 'none', opacity: isReturnLinkEnabled ? 1 : 0.5}} 
                         to='/solicitud-libro'
@@ -234,19 +236,20 @@ const PaginaPrincipal: React.FC = () => {
                             Iniciar Sesión
                         </button>
                     ) : (
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <span>{userName}</span>
+                        <div style={{ display: 'flex', alignItems: 'center',flexDirection:"column"}}>
+                            <span>Bienvenido {userName}</span>
                             <button onClick={handleLogout} style={{ marginLeft: '10px', background: 'none', border: 'none', color: 'red', cursor: 'pointer' }}>
                                 Cerrar Sesión
                             </button>
                         </div>
                     )}
                 </div>
+                </div>
             </div>
 
             <div className='cuerpo'>
                 {books.map((book) => (
-                    <Card key={book.bookId} sx={{ width: "20vw", height: "60vh", textAlign: "center", alignItems: "center", display: "flex", flexDirection: "column", margin: '10px' }}>
+                    <Card key={book.bookId} sx={{ border:"1px solid gray",boxShadow:"0px 4px 8px rgba(0, 0, 0, 0.2)",width: "20vw", height: "60vh", textAlign: "center", alignItems: "center", display: "flex", flexDirection: "column", margin: '10px' }}>
                         <CardMedia
                         component="img"
                             sx={{ width: "10vw", height: "25vh",objectFit: 'cover' }}

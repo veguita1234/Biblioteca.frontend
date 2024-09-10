@@ -8,7 +8,7 @@ import SolicitudLibro from './Pages/SolicitudLibro/SolicitudLibro';
 
 function App() {
   return (
-    <Router basename='/Biblioteca.frontend'>
+    <Router >
       <div className="App">
         <Routes>
           <Route path='/' element={<PaginaPrincipal />}></Route>

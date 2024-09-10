@@ -205,12 +205,14 @@ const AñadirLibros: React.FC = () => {
     };
 
     return (
-        <div>
+        <div className='body'>
             <div><Link to='/paginaprincipal'><FaLongArrowAltLeft style={{fontSize:"60px"}} /></Link></div>
-            <div style={{ marginTop: "15vh", display: "flex", flexDirection: "row", gap: "25em", padding: "20px" }}>
-                <Card sx={{ width: "20vw", height: "60vh", textAlign: "center", alignItems: "center", display: "flex", flexDirection: "column" }}>
+            <div className='cuerpoañadir' style={{ marginTop: "8vh", display: "flex", flexDirection: "row", gap: "25em", padding: "20px" }}>
+                <Card sx={{ width: "20vw", height: "60vh", textAlign: "center", alignItems: "center", display: "flex", flexDirection: "column",
+                    border:"1px solid gray",padding:"20px",boxShadow:"0px 4px 8px rgba(0, 0, 0, 0.2)"
+                 }}>
                     <CardMedia
-                        sx={{ width: "10vw", height: "25vh", border: "1px solid" }}
+                        sx={{ width: "10vw", height: "25vh" }}
                         image={imageUrl || '/default-image.png'}
                         title="Imagen del libro"
                     />
@@ -238,20 +240,19 @@ const AñadirLibros: React.FC = () => {
                         )}
                     </CardActions>
                 </Card>
-                <div style={{ flex: 1, overflowX: "auto", maxWidth: "60vw" }}>
+                <div style={{ flex: 1, overflowX: "auto", maxWidth: "60vw",marginTop:"10vh",height:"42.5vh" }}>
                     <table style={{ width: "100%", borderCollapse: "collapse" }}>
-                        <thead>
+                        <thead style={{position: "sticky", top: 0, backgroundColor: "red", zIndex: 1,border:"1px solid black"}}>
                             <tr>
                                 <th style={styles.headerCell}>Título</th>
                                 <th style={styles.headerCell}>Autor</th>
                                 <th style={styles.headerCell}>Género</th>
                                 <th style={styles.headerCell}>Año</th>
                                 <th style={styles.headerCell}>Cantidad</th>
-                                {/* <th style={styles.headerCell}>Imagen</th> */}
                                 <th style={styles.headerCell}>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody style={{backgroundColor:"white"}}>
                             {books.map((book) => (
                                 <tr key={book.bookId}>
                                     <td style={styles.cell}>{book.tittle}</td>
@@ -259,13 +260,7 @@ const AñadirLibros: React.FC = () => {
                                     <td style={styles.cell}>{book.gender}</td>
                                     <td style={styles.cell}>{book.year}</td>
                                     <td style={styles.cell}>{book.cantidad}</td>
-                                    {/* <td style={styles.cell}>
-                                        <img
-                                            src={`http://localhost:5243/api/Book/bookimage/${book.imagen}`}
-                                            alt={book.tittle}
-                                            style={{ width: '50px', height: 'auto' }}
-                                        />
-                                    </td> */}
+                                    
                                     <td style={styles.buttonCell}>
                                         <Button
                                             onClick={() => handleUpdateClick(book)}
