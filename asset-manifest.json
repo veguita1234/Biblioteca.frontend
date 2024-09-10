@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/Biblioteca.frontend/static/css/main.4daeff66.css",
+    "main.js": "/Biblioteca.frontend/static/js/main.718cf4fe.js",
+    "static/js/453.1f10ed28.chunk.js": "/Biblioteca.frontend/static/js/453.1f10ed28.chunk.js",
+    "static/media/fondolibros.jpg": "/Biblioteca.frontend/static/media/fondolibros.5b5666eff0376740cf48.jpg",
+    "index.html": "/Biblioteca.frontend/index.html",
+    "main.4daeff66.css.map": "/Biblioteca.frontend/static/css/main.4daeff66.css.map",
+    "main.718cf4fe.js.map": "/Biblioteca.frontend/static/js/main.718cf4fe.js.map",
+    "453.1f10ed28.chunk.js.map": "/Biblioteca.frontend/static/js/453.1f10ed28.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4daeff66.css",
+    "static/js/main.718cf4fe.js"
+  ]
+}
