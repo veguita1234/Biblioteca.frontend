@@ -2,6 +2,8 @@
   "name": "biblioteca.frontend",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://veguita1234.github.io/Biblioteca.frontend",
+
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
