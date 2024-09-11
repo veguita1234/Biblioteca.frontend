@@ -7,7 +7,7 @@ const SolicitudLibro: React.FC = () => {
     const [librosPedidos, setLibrosPedidos] = useState<any[]>([]);
     const [selectedBooks, setSelectedBooks] = useState<string[]>([]);
     const [observacion, setObservacion] = useState<string>('');
-    const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true); // Estado para el botón
+    const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true); 
 
     useEffect(() => {
         const fetchLibrosParaDevolver = async () => {
@@ -90,15 +90,14 @@ const SolicitudLibro: React.FC = () => {
                 
                 // Actualizar la lista de libros pedidos para eliminar los libros seleccionados
                 setLibrosPedidos(prevLibros =>
-                    prevLibros.filter(libro => !selectedBooks.includes(libro.title)) // Asegúrate de que 'title' coincide con el campo correcto
+                    prevLibros.filter(libro => !selectedBooks.includes(libro.title)) 
                 );
                 
                 // Limpiar la selección de libros y la observación
                 setSelectedBooks([]);
                 setObservacion('');
     
-                // Opcionalmente, puedes volver a cargar la lista de libros para asegurar que esté actualizada
-                // fetchLibrosParaDevolver();
+                
             } else {
                 const errorMessage = results.find(result => !result.success)?.message || "Error al realizar la solicitud.";
                 alert(`Error: ${errorMessage}`);
@@ -145,7 +144,7 @@ const SolicitudLibro: React.FC = () => {
                     <button 
                         style={{ width: "7vw", fontSize: "15px", marginLeft: "42vw" }} 
                         onClick={handleSubmit}
-                        disabled={isButtonDisabled} // Deshabilitar el botón en base al estado
+                        disabled={isButtonDisabled} 
                     >
                         Solicitar Devolución
                     </button>

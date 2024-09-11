@@ -26,9 +26,8 @@ const PaginaPrincipal: React.FC = () => {
 
     
     useEffect(() => {
-        // Verificar almacenamiento local para libros
+
         const storedBooks = JSON.parse(localStorage.getItem('books') || '[]');
-        console.log('Stored Books from localStorage:', storedBooks);
         setBooks(storedBooks);
         setFilteredBooks(storedBooks);
 
@@ -40,15 +39,14 @@ const PaginaPrincipal: React.FC = () => {
         const userData = JSON.parse(user);
         setIsAdmin(userData.tipo === 'ADMIN');
     }
-        // Cargar libros desde la API
+
         fetch('http://localhost:5243/api/Book/books')
             .then(response => response.json())
             .then(data => {
-                console.log('Books fetched from API:', data);
                 if (data.success) {
                     const fetchedBooks = data.books;
 
-                    // Obtener imágenes para los libros
+
                     const updatedBooks = fetchedBooks.map((book: any) => {
                         return fetch(`http://localhost:5243/api/Book/bookimage/${book.imagen}`)
                             .then(response => response.blob())
@@ -58,7 +56,7 @@ const PaginaPrincipal: React.FC = () => {
                             })
                             .catch(error => {
                                 console.error('Error fetching book image:', error);
-                                return { ...book, imageUrl: '/default-image.png' }; // Fallback image
+                                return { ...book, imageUrl: '/default-image.png' }; 
                             });
                     });
 
@@ -88,7 +86,7 @@ const PaginaPrincipal: React.FC = () => {
                         const librosParaDevolver = data.libros;
                         const shouldEnableReturnLink = librosParaDevolver.length > 0;
                         setIsReturnLinkEnabled(shouldEnableReturnLink);
-                        localStorage.setItem('isReturnLinkEnabled', shouldEnableReturnLink ? 'true' : 'false'); // Guardar el estado en localStorage
+                        localStorage.setItem('isReturnLinkEnabled', shouldEnableReturnLink ? 'true' : 'false'); 
                     } else {
                         console.error('Error fetching returnable books:', data.message);
                     }
@@ -98,7 +96,7 @@ const PaginaPrincipal: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        // Filtrar libros basados en el término de búsqueda
+       
         const lowercasedSearchTerm = searchTerm.toLowerCase();
         const filtered = books.filter(book =>
             book.tittle.toLowerCase().includes(lowercasedSearchTerm) ||
@@ -115,21 +113,20 @@ const PaginaPrincipal: React.FC = () => {
     const handleLoginSuccess = (userName: string) => {
         setUserName(userName);
         setIsLoggedIn(true);
-        // Suponiendo que el userData tiene un campo tipo
+
         const userData = JSON.parse(localStorage.getItem('user') || '{}');
         setIsAdmin(userData.tipo === 'ADMIN');
         localStorage.setItem('user', JSON.stringify({ userName, tipo: userData.tipo }));
-        console.log('User Data:', userData); // Verifica que el tipo es ADMIN
         closeModal();
     };
     
 
     const handleLogout = () => {
         localStorage.removeItem('user');
-        localStorage.removeItem('isReturnLinkEnabled'); // Limpiar el estado del enlace de devolución
+        localStorage.removeItem('isReturnLinkEnabled'); 
         setIsLoggedIn(false);
         setUserName('');
-        setIsReturnLinkEnabled(false); // Reset the return link status on logout
+        setIsReturnLinkEnabled(false); 
     };
 
     const handlePedir = (bookTitle: string) => {
@@ -138,7 +135,7 @@ const PaginaPrincipal: React.FC = () => {
             return;
         }
     
-        console.log('Book Title:', bookTitle); // Agregado para depuración
+
         const solicitud = {
             tipo: "Pedir",
             fecha: new Date().toISOString(),
@@ -156,7 +153,7 @@ const PaginaPrincipal: React.FC = () => {
         })
         .then(response => response.json())
         .then(data => {
-            console.log('API Response:', data); // Agregado para depuración
+
             if (data.success) {
                 alert("Solicitud realizada con éxito.");
                 setIsReturnLinkEnabled(true); // Habilitar el enlace de devolver libro

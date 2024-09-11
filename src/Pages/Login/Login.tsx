@@ -45,7 +45,7 @@ const Login: React.FC<LoginProps> = ({ closeModal, onLoginSuccess }) => {
         });
     };
 
-    // Manejar cambios para ambos tipos de elementos
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setFormData({
             ...formData,
@@ -72,21 +72,15 @@ const Login: React.FC<LoginProps> = ({ closeModal, onLoginSuccess }) => {
             const result = await response.json();
 
             if (response.ok) {
-                console.log(`Tipo: ${formData.tipo}, Nombre de Usuario: ${formData.userName}`);
                 alert(result.Message || 'Inicio de sesión exitoso.');
 
-                // Guarda el userName en localStorage
+
                 localStorage.setItem('user', JSON.stringify({
                     userName: formData.userName,
                     tipo: formData.tipo
                 }));
 
                 onLoginSuccess(formData.userName); 
-                if (formData.tipo === 'USUARIO') {
-                    // Lógica para usuario normal
-                } else if (formData.tipo === 'ADMIN') {
-                    // Lógica para administrador
-                }
                 closeModal();
             } else {
                 alert(result.message || 'Error al iniciar sesión.');
@@ -118,13 +112,13 @@ const Login: React.FC<LoginProps> = ({ closeModal, onLoginSuccess }) => {
             if (response.ok) {
                 alert(result.Message || 'Registro exitoso.');
 
-                // Guarda el userName en localStorage
+
                 localStorage.setItem('user', JSON.stringify({
                     userName: formData.userName,
                     tipo: formData.tipo
                 }));
 
-                onLoginSuccess(formData.userName); // Pasa el userName al componente principal
+                onLoginSuccess(formData.userName); 
                 closeModal();
             } else {
                 alert(result.message || 'Error al registrarse.');

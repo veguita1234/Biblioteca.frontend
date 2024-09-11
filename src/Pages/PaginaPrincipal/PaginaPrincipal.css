@@ -27,8 +27,8 @@
 
     .cuerpo {
         display: grid;
-        grid-template-columns: repeat(4, 1fr); /* 5 columnas de igual tamaño */
-        gap: 16px; /* Espacio entre los elementos */
+        grid-template-columns: repeat(4, 1fr); 
+        gap: 16px; 
         padding: 20px; 
     }
 }
