@@ -113,8 +113,8 @@ const SolicitudLibro: React.FC = () => {
         <div className='cuerposolicitud'>
             <Link to='/paginaprincipal'><FaLongArrowAltLeft style={{ fontSize: "60px",color:"white" }} /></Link>
             <div style={{ display: "flex", justifyContent: "center" }}>
-                <div style={{ padding:"20px",borderRadius:"30px",backgroundColor:"white", display: "flex", flexDirection: "column", width: "50vw", marginTop: "10vh", gap: "3em" }}>
-                    <span style={{ fontSize: "30px" }}>Devolver Libro</span>
+                <div style={{ padding:"20px",borderRadius:"30px",backgroundColor:"white", display: "flex", flexDirection: "column", width: "50vw",  gap: "3em" }}>
+                    <span style={{ fontSize: "30px",fontWeight:"bold" }}>Devolver Libro</span>
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1em" }}>
                         <label>Tipo de Solicitud</label>
                         <input value="Regresar" readOnly />
@@ -123,10 +123,11 @@ const SolicitudLibro: React.FC = () => {
                         <label>Nombre de Usuario</label>
                         <input value={JSON.parse(localStorage.getItem('user') || '{}').userName} readOnly />
                         <label>Libro</label>
-                        <div style={{ border: "1px solid",  overflowY: 'scroll' }}>
+                        <div style={{ border: "1px solid",  overflowY: 'auto',height:"15vh" }}>
                             {librosPedidos.map((libro) => (
                                 <div key={libro.title}>
                                     <input 
+                                    
                                         type="checkbox" 
                                         checked={selectedBooks.includes(libro.title)} 
                                         onChange={() => handleCheckboxChange(libro.title)} 
@@ -136,7 +137,7 @@ const SolicitudLibro: React.FC = () => {
                             ))}
                         </div>
                         <label>Observación</label>
-                        <textarea 
+                        <textarea  style={{height:"20vh"}}
                             value={observacion} 
                             onChange={(e) => setObservacion(e.target.value)} 
                         />

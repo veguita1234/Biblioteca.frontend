@@ -248,7 +248,7 @@ const PaginaPrincipal: React.FC = () => {
             </div>
 
             <div className='cuerpo'>
-                {books.map((book) => (
+            {filteredBooks.map((book) => (
                     <Card key={book.bookId} sx={{ border:"1px solid gray",boxShadow:"0px 4px 8px rgba(0, 0, 0, 0.2)",width: "20vw", height: "60vh", textAlign: "center", alignItems: "center", display: "flex", flexDirection: "column", margin: '10px' }}>
                         <CardMedia
                         component="img"
