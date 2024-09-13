@@ -1,15 +1,18 @@
 {
   "files": {
-    "main.css": "/Biblioteca.frontend/static/css/main.df1dbdbc.css",
-    "main.js": "/Biblioteca.frontend/static/js/main.9edb0154.js",
+    "main.css": "/Biblioteca.frontend/static/css/main.c77c30c6.css",
+    "main.js": "/Biblioteca.frontend/static/js/main.409018a6.js",
     "static/js/453.1f10ed28.chunk.js": "/Biblioteca.frontend/static/js/453.1f10ed28.chunk.js",
+    "static/media/biblioteca.png": "/Biblioteca.frontend/static/media/biblioteca.f5517ee045a026fc7c9b.png",
+    "static/media/background.png": "/Biblioteca.frontend/static/media/background.0004f444ba3b12d05ae9.png",
+    "static/media/fondolibros.jpg": "/Biblioteca.frontend/static/media/fondolibros.5b5666eff0376740cf48.jpg",
     "index.html": "/Biblioteca.frontend/index.html",
-    "main.df1dbdbc.css.map": "/Biblioteca.frontend/static/css/main.df1dbdbc.css.map",
-    "main.9edb0154.js.map": "/Biblioteca.frontend/static/js/main.9edb0154.js.map",
+    "main.c77c30c6.css.map": "/Biblioteca.frontend/static/css/main.c77c30c6.css.map",
+    "main.409018a6.js.map": "/Biblioteca.frontend/static/js/main.409018a6.js.map",
     "453.1f10ed28.chunk.js.map": "/Biblioteca.frontend/static/js/453.1f10ed28.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.df1dbdbc.css",
-    "static/js/main.9edb0154.js"
+    "static/css/main.c77c30c6.css",
+    "static/js/main.409018a6.js"
   ]
 }
