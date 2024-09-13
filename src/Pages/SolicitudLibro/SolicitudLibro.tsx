@@ -20,7 +20,7 @@ const SolicitudLibro: React.FC = () => {
             }
 
             try {
-                const response = await fetch(`http://localhost:5243/api/Solicitud/obtenerLibrosParaDevolver?userName=${encodeURIComponent(userName)}`, {
+                const response = await fetch(`https://ceiberapp-001-site1.ftempurl.com/api/Solicitud/obtenerLibrosParaDevolver?userName=${encodeURIComponent(userName)}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ const SolicitudLibro: React.FC = () => {
     
         try {
             const responses = await Promise.all(solicitudes.map(solicitud => 
-                fetch('http://localhost:5243/api/Solicitud/crearSolicitud', {
+                fetch('https://ceiberapp-001-site1.ftempurl.com/api/Solicitud/crearSolicitud', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

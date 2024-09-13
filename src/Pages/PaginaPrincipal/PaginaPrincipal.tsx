@@ -40,7 +40,7 @@ const PaginaPrincipal: React.FC = () => {
         setIsAdmin(userData.tipo === 'ADMIN');
     }
 
-        fetch('http://localhost:5243/api/Book/books')
+        fetch('https://ceiberapp-001-site1.ftempurl.com/api/Book/books')
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
@@ -48,7 +48,7 @@ const PaginaPrincipal: React.FC = () => {
 
 
                     const updatedBooks = fetchedBooks.map((book: any) => {
-                        return fetch(`http://localhost:5243/api/Book/bookimage/${book.imagen}`)
+                        return fetch(`https://ceiberapp-001-site1.ftempurl.com/api/Book/bookimage/${book.imagen}`)
                             .then(response => response.blob())
                             .then(imageBlob => {
                                 const imageUrl = URL.createObjectURL(imageBlob);
@@ -79,7 +79,7 @@ const PaginaPrincipal: React.FC = () => {
             setUserName(storedUser.userName);
 
             // Verificar si el usuario tiene libros para devolver
-            fetch(`http://localhost:5243/api/Book/obtenerLibrosParaDevolver?userName=${storedUser.userName}`)
+            fetch(`https://ceiberapp-001-site1.ftempurl.com/api/Book/obtenerLibrosParaDevolver?userName=${storedUser.userName}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
@@ -144,7 +144,7 @@ const PaginaPrincipal: React.FC = () => {
             observation: null
         };
     
-        fetch('http://localhost:5243/api/Solicitud/crearSolicitud', {
+        fetch('https://ceiberapp-001-site1.ftempurl.com/api/Solicitud/crearSolicitud', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -59,7 +59,7 @@ const Login: React.FC<LoginProps> = ({ closeModal, onLoginSuccess }) => {
 
     const handleLogin = async () => {
         try {
-            const response = await fetch('http://localhost:5243/api/User/login', {
+            const response = await fetch('https://ceiberapp-001-site1.ftempurl.com/api/User/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -93,7 +93,7 @@ const Login: React.FC<LoginProps> = ({ closeModal, onLoginSuccess }) => {
 
     const handleRegister = async () => {
         try {
-            const response = await fetch('http://localhost:5243/api/User/register', {
+            const response = await fetch('https://ceiberapp-001-site1.ftempurl.com/api/User/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
