@@ -21,7 +21,7 @@ const PaginaPrincipal: React.FC = () => {
     const [isAdmin, setIsAdmin] = useState(false);
     const [books, setBooks] = useState<any[]>([]);
     const [filteredBooks, setFilteredBooks] = useState<any[]>([]);
-    const [isReturnLinkEnabled, setIsReturnLinkEnabled] = useState<boolean>(false);
+    //const [isReturnLinkEnabled, setIsReturnLinkEnabled] = useState<boolean>(false);
     const [searchTerm, setSearchTerm] = useState<string>('');
 
     
@@ -31,16 +31,9 @@ const PaginaPrincipal: React.FC = () => {
         setBooks(storedBooks);
         setFilteredBooks(storedBooks);
 
-        // Verificar almacenamiento local para estado de enlace de devolución
-        const storedReturnLinkStatus = localStorage.getItem('isReturnLinkEnabled') === 'true';
-        setIsReturnLinkEnabled(storedReturnLinkStatus);
-        const user = localStorage.getItem('user');
-    if (user) {
-        const userData = JSON.parse(user);
-        setIsAdmin(userData.tipo === 'ADMIN');
-    }
 
         fetch('https://ceiberapp-001-site1.ftempurl.com/api/Book/books')
+        //fetch('http://localhost:5243/api/Book/books')
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
@@ -49,6 +42,7 @@ const PaginaPrincipal: React.FC = () => {
 
                     const updatedBooks = fetchedBooks.map((book: any) => {
                         return fetch(`https://ceiberapp-001-site1.ftempurl.com/api/Book/bookimage/${book.imagen}`)
+                        //return fetch(`http://localhost:5243/api/Book/bookimage/${book.imagen}`)
                             .then(response => response.blob())
                             .then(imageBlob => {
                                 const imageUrl = URL.createObjectURL(imageBlob);
@@ -80,12 +74,13 @@ const PaginaPrincipal: React.FC = () => {
 
             // Verificar si el usuario tiene libros para devolver
             fetch(`https://ceiberapp-001-site1.ftempurl.com/api/Book/obtenerLibrosParaDevolver?userName=${storedUser.userName}`)
+            //fetch(`http://localhost:5243/api/Book/obtenerLibrosParaDevolver?userName=${storedUser.userName}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
                         const librosParaDevolver = data.libros;
                         const shouldEnableReturnLink = librosParaDevolver.length > 0;
-                        setIsReturnLinkEnabled(shouldEnableReturnLink);
+                        //setIsReturnLinkEnabled(shouldEnableReturnLink);
                         localStorage.setItem('isReturnLinkEnabled', shouldEnableReturnLink ? 'true' : 'false'); 
                     } else {
                         console.error('Error fetching returnable books:', data.message);
@@ -100,8 +95,8 @@ const PaginaPrincipal: React.FC = () => {
         const lowercasedSearchTerm = searchTerm.toLowerCase();
         const filtered = books.filter(book =>
             book.tittle.toLowerCase().includes(lowercasedSearchTerm) ||
-            book.author.toLowerCase().includes(lowercasedSearchTerm) ||
-            book.year.toString().includes(lowercasedSearchTerm) ||
+            book.author?.toLowerCase().includes(lowercasedSearchTerm) ||
+            book.year?.toString().includes(lowercasedSearchTerm) ||
             book.gender.toLowerCase().includes(lowercasedSearchTerm)
         );
         setFilteredBooks(filtered);
@@ -126,10 +121,10 @@ const PaginaPrincipal: React.FC = () => {
         localStorage.removeItem('isReturnLinkEnabled'); 
         setIsLoggedIn(false);
         setUserName('');
-        setIsReturnLinkEnabled(false); 
+        //setIsReturnLinkEnabled(false); 
     };
 
-    const handlePedir = (bookTitle: string) => {
+    const handlePedir = (bookTitle: string, bookGender: string) => {
         if (!isLoggedIn) {
             alert("Por favor, inicie sesión primero.");
             return;
@@ -141,10 +136,12 @@ const PaginaPrincipal: React.FC = () => {
             fecha: new Date().toISOString(),
             userName,
             book: bookTitle,
+            gender: bookGender, 
             observation: null
         };
-    
+    console.log("Datos de la solicitud:", solicitud);
         fetch('https://ceiberapp-001-site1.ftempurl.com/api/Solicitud/crearSolicitud', {
+        //fetch('http://localhost:5243/api/Solicitud/crearSolicitud', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -156,7 +153,7 @@ const PaginaPrincipal: React.FC = () => {
 
             if (data.success) {
                 alert("Solicitud realizada con éxito.");
-                setIsReturnLinkEnabled(true); // Habilitar el enlace de devolver libro
+                //setIsReturnLinkEnabled(true); // Habilitar el enlace de devolver libro
                 localStorage.setItem('isReturnLinkEnabled', 'true'); 
                 window.location.reload();
             } else {
@@ -215,7 +212,9 @@ const PaginaPrincipal: React.FC = () => {
                 <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center",gap:"2em"}}>
                 <div style={{ height:"5vh",width:"9vw",display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"center"}}>
                     <Link 
-                        style={{textDecoration:"none",color:"blue", pointerEvents: isReturnLinkEnabled ? 'auto' : 'none', opacity: isReturnLinkEnabled ? 1 : 0.5}} 
+                        style={{textDecoration:"none",color:"blue", 
+                            //pointerEvents: isReturnLinkEnabled ? 'auto' : 'none', opacity: isReturnLinkEnabled ? 1 : 0.5
+                        }} 
                         to='/solicitud-libro'
                     >
                         <span style={{fontSize:"20px"}}>Devolver Libro</span>
@@ -266,7 +265,7 @@ const PaginaPrincipal: React.FC = () => {
                             <span>{book.cantidad}</span>
                         </CardContent>
                         <CardActions>
-                            <Button onClick={() => handlePedir(book.tittle)}>Pedir</Button>
+                            <Button onClick={() => handlePedir(book.tittle, book.gender)}>Pedir</Button>
                         </CardActions>
                     </Card>
                 ))}

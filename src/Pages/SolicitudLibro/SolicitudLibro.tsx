@@ -4,8 +4,8 @@ import { FaLongArrowAltLeft } from "react-icons/fa";
 import './SolicitudLibro.css';
 
 const SolicitudLibro: React.FC = () => {
-    const [librosPedidos, setLibrosPedidos] = useState<any[]>([]);
-    const [selectedBooks, setSelectedBooks] = useState<string[]>([]);
+    const [librosPedidos, setLibrosPedidos] = useState<{ title: string, gender: string}[]>([]);
+    const [selectedBooks, setSelectedBooks] = useState<{ title: string, gender: string }[]>([]);
     const [observacion, setObservacion] = useState<string>('');
     const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true); 
 
@@ -13,7 +13,9 @@ const SolicitudLibro: React.FC = () => {
         const fetchLibrosParaDevolver = async () => {
             const token = localStorage.getItem('token');
             const userName = JSON.parse(localStorage.getItem('user') || '{}').userName;
-            
+            console.log('Token:', token);
+    console.log('UserName:', userName);
+
             if (!token || !userName) {
                 console.error('Token o nombre de usuario no disponibles');
                 return;
@@ -21,6 +23,7 @@ const SolicitudLibro: React.FC = () => {
 
             try {
                 const response = await fetch(`https://ceiberapp-001-site1.ftempurl.com/api/Solicitud/obtenerLibrosParaDevolver?userName=${encodeURIComponent(userName)}`, {
+                //const response = await fetch(`http://localhost:5243/api/Solicitud/obtenerLibrosParaDevolver?userName=${encodeURIComponent(userName)}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -29,7 +32,7 @@ const SolicitudLibro: React.FC = () => {
                 });
 
                 const data = await response.json();
-
+                console.log("Datos recibidos:", data);
                 if (data.success) {
                     setLibrosPedidos(data.libros);
                 } else {
@@ -47,11 +50,18 @@ const SolicitudLibro: React.FC = () => {
         setIsButtonDisabled(selectedBooks.length === 0); // Habilita el botón solo si hay libros seleccionados
     }, [selectedBooks]);
 
-    const handleCheckboxChange = (bookTitle: string) => {
-        setSelectedBooks(prev => 
-            prev.includes(bookTitle) ? prev.filter(title => title !== bookTitle) : [...prev, bookTitle]
-        );
+    const handleCheckboxChange = (bookTitle: string, bookGender: string) => {
+        setSelectedBooks(prev => {
+            const isSelected = prev.some(book => book.title === bookTitle && book.gender === bookGender);
+            
+            if (isSelected) {
+                return prev.filter(book => !(book.title === bookTitle && book.gender === bookGender));
+            } else {
+                return [...prev, { title: bookTitle, gender: bookGender }];
+            }
+        });
     };
+    
 
     const handleSubmit = async () => {
         const token = localStorage.getItem('token');
@@ -62,17 +72,19 @@ const SolicitudLibro: React.FC = () => {
             return;
         }
     
-        const solicitudes = selectedBooks.map((bookTitle) => ({
+        const solicitudes = selectedBooks.map(({title, gender}) => ({
             tipo: "Regresar",
             fecha: new Date().toISOString(),
             userName,
-            book: bookTitle,
+            book: title,
+            gender: gender,
             observation: observacion || null,
         }));
     
         try {
             const responses = await Promise.all(solicitudes.map(solicitud => 
                 fetch('https://ceiberapp-001-site1.ftempurl.com/api/Solicitud/crearSolicitud', {
+                //fetch('http://localhost:5243/api/Solicitud/crearSolicitud', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -90,7 +102,7 @@ const SolicitudLibro: React.FC = () => {
                 
                 // Actualizar la lista de libros pedidos para eliminar los libros seleccionados
                 setLibrosPedidos(prevLibros =>
-                    prevLibros.filter(libro => !selectedBooks.includes(libro.title)) 
+                    prevLibros.filter(libro => !selectedBooks.some(selected => selected.title === libro.title && selected.gender === libro.gender))
                 );
                 
                 // Limpiar la selección de libros y la observación
@@ -124,14 +136,16 @@ const SolicitudLibro: React.FC = () => {
                         <label>Libro</label>
                         <div style={{ border: "1px solid",  overflowY: 'auto',height:"15vh" }}>
                             {librosPedidos.map((libro) => (
-                                <div key={libro.title}>
+                                <div key={`${libro.title}-${libro.gender}`} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                                     <input 
                                     
                                         type="checkbox" 
-                                        checked={selectedBooks.includes(libro.title)} 
-                                        onChange={() => handleCheckboxChange(libro.title)} 
+                                        checked={selectedBooks.some(selected => selected.title === libro.title && selected.gender === libro.gender)} 
+                                        onChange={() => handleCheckboxChange(libro.title, libro.gender)} 
+                                     
                                     />
-                                    <span>{libro.title}</span>
+                                    <span>{libro.title} {libro.gender}</span>
+                                    
                                 </div>
                             ))}
                         </div>

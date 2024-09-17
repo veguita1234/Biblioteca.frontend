@@ -75,11 +75,13 @@ const Login: React.FC<LoginProps> = ({ closeModal, onLoginSuccess }) => {
             if (response.ok) {
                 alert(result.Message || 'Inicio de sesión exitoso.');
 
-
+                localStorage.setItem('token', result.token);
                 localStorage.setItem('user', JSON.stringify({
                     userName: formData.userName,
                     tipo: formData.tipo
                 }));
+                console.log('Token:', result.token);
+                console.log('UserName:', formData.userName);
 
                 onLoginSuccess(formData.userName); 
                 closeModal();
@@ -95,6 +97,7 @@ const Login: React.FC<LoginProps> = ({ closeModal, onLoginSuccess }) => {
     const handleRegister = async () => {
         try {
             const response = await fetch('https://ceiberapp-001-site1.ftempurl.com/api/User/register', {
+            //const response = await fetch('http://localhost:5243/api/User/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -113,12 +116,12 @@ const Login: React.FC<LoginProps> = ({ closeModal, onLoginSuccess }) => {
             if (response.ok) {
                 alert(result.Message || 'Registro exitoso.');
 
-
+                localStorage.setItem('token', result.token);
                 localStorage.setItem('user', JSON.stringify({
                     userName: formData.userName,
                     tipo: formData.tipo
                 }));
-
+                
                 onLoginSuccess(formData.userName); 
                 closeModal();
             } else {

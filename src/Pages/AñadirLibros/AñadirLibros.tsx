@@ -23,7 +23,8 @@ const AñadirLibros: React.FC = () => {
     const [imageUrl, setImageUrl] = useState<string | null>(null);
 
     useEffect(() => {
-        fetch('https://ceiberapp-001-site1.ftempurl.com:5243/api/Book/books')
+        fetch('https://ceiberapp-001-site1.ftempurl.com/api/Book/books')
+        //fetch('http://localhost:5243/api/Book/books')
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
@@ -38,10 +39,12 @@ const AñadirLibros: React.FC = () => {
     useEffect(() => {
         if (selectedBookId) {
             fetch(`https://ceiberapp-001-site1.ftempurl.com/api/Book/getbookimage/${selectedBookId}`)
+            //fetch(`http://localhost:5243/api/Book/getbookimage/${selectedBookId}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.success && data.image) {
                         setImageUrl(`https://ceiberapp-001-site1.ftempurl.com/api/Book/bookimage/${data.image}`);
+                        //setImageUrl(`http://localhost:5243/api/Book/bookimage/${data.image}`);
                     } else {
                         setImageUrl(null);
                     }
@@ -80,6 +83,7 @@ const AñadirLibros: React.FC = () => {
     
             try {
                 const uploadResponse = await fetch('https://ceiberapp-001-site1.ftempurl.com/api/Book/uploadbookimage', {
+                //const uploadResponse = await fetch('http://localhost:5243/api/Book/uploadbookimage', {
                     method: 'POST',
                     body: formData
                 });
@@ -110,6 +114,8 @@ const AñadirLibros: React.FC = () => {
         const url = isUpdating && selectedBookId
             ? `https://ceiberapp-001-site1.ftempurl.com/api/Book/updatebookdata/${selectedBookId}`
             : 'https://ceiberapp-001-site1.ftempurl.com/api/Book/addbookdata';
+            //? `http://localhost:5243/api/Book/updatebookdata/${selectedBookId}`
+            //: 'http://localhost:5243/api/Book/addbookdata';
         const method = isUpdating && selectedBookId ? 'PUT' : 'POST';
     
         try {
@@ -135,6 +141,7 @@ const AñadirLibros: React.FC = () => {
                 setImageUrl(null);
                 setIsUpdating(false);
                 const booksResponse = await fetch('https://ceiberapp-001-site1.ftempurl.com/api/Book/books');
+                //const booksResponse = await fetch('http://localhost:5243/api/Book/books');
                 const booksData = await booksResponse.json();
                 if (booksData.success) {
                     setBooks(booksData.books);
@@ -161,6 +168,7 @@ const AñadirLibros: React.FC = () => {
         });
         setSelectedImage(null);
         setImageUrl(book.imagen ? `https://ceiberapp-001-site1.ftempurl.com/api/Book/bookimage/${book.imagen}` : null);
+        //setImageUrl(book.imagen ? `http://localhost:5243/api/Book/bookimage/${book.imagen}` : null);
         setIsUpdating(true);
     };
 
