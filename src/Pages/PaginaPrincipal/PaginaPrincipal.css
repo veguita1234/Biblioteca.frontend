@@ -3,7 +3,7 @@
     flex-direction: column;
     width: 100%;
     background-image: radial-gradient(circle at 50% 50%, #ffffff 0, #ffffff 25%, #ffffff 50%, #f4edef 75%, #ebdee3 100%);
-    gap: 8em;
+    gap: 2em;
 
 
     .encabezado {
@@ -14,7 +14,7 @@
         align-items: center;
         justify-content: center;
         background-image: url(/public/fondolibros.jpg);
-        gap: 18em;
+        gap: 15em;
 
         .perfil {
             height: 10vh;
@@ -26,9 +26,15 @@
     }
 
     .cuerpo {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr); 
-        gap: 16px; 
-        padding: 20px; 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+        .subcuerpo {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 25px; 
+            padding: 20px; 
+        }
     }
 }

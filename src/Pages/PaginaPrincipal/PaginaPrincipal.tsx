@@ -71,6 +71,7 @@ const PaginaPrincipal: React.FC = () => {
         if (storedUser.userName) {
             setIsLoggedIn(true);
             setUserName(storedUser.userName);
+            setIsAdmin(storedUser.tipo === 'ADMIN');
 
             // Verificar si el usuario tiene libros para devolver
             fetch(`https://ceiberapp-001-site1.ftempurl.com/api/Book/obtenerLibrosParaDevolver?userName=${storedUser.userName}`)
@@ -175,7 +176,9 @@ const PaginaPrincipal: React.FC = () => {
     return (
         <div className='PaginaPrincipal'>
             <div className='encabezado'>
-            <div style={{height:"5vh",width:"9vw",display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"center"}}>
+            
+            <div style={{height:"13vh",width:"16vw",display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"center",gap:"2em",border:"3px"}}>
+            <img style={{height:"13vh"}} src='PALPA.png'/>
                 {isAdmin && (
                         <Link style={{textDecoration:"none",color:"blue"}} to='/añadir-libros'>
                             <FaBookMedical style={{fontSize:"20px"}}/>
@@ -244,7 +247,9 @@ const PaginaPrincipal: React.FC = () => {
             </div>
 
             <div className='cuerpo'>
-            {filteredBooks.map((book) => (
+                <img style={{height:"18vh",width:"20vw"}} src='JORNADA.png'/>
+                <div  className='subcuerpo'>
+                {filteredBooks.map((book) => (
                     <Card key={book.bookId} sx={{ border:"1px solid gray",boxShadow:"0px 4px 8px rgba(0, 0, 0, 0.2)",width: "20vw", height: "60vh", textAlign: "center", alignItems: "center", display: "flex", flexDirection: "column", margin: '10px' }}>
                         <CardMedia
                         component="img"
@@ -269,6 +274,8 @@ const PaginaPrincipal: React.FC = () => {
                         </CardActions>
                     </Card>
                 ))}
+                </div>
+            
             </div>
 
             <Modal
