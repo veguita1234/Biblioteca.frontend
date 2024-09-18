@@ -21,7 +21,6 @@ const PaginaPrincipal: React.FC = () => {
     const [isAdmin, setIsAdmin] = useState(false);
     const [books, setBooks] = useState<any[]>([]);
     const [filteredBooks, setFilteredBooks] = useState<any[]>([]);
-    //const [isReturnLinkEnabled, setIsReturnLinkEnabled] = useState<boolean>(false);
     const [searchTerm, setSearchTerm] = useState<string>('');
 
     
@@ -66,14 +65,12 @@ const PaginaPrincipal: React.FC = () => {
             })
             .catch(error => console.error('Error fetching books:', error));
 
-        // Verificar si el usuario está logueado
         const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
         if (storedUser.userName) {
             setIsLoggedIn(true);
             setUserName(storedUser.userName);
             setIsAdmin(storedUser.tipo === 'ADMIN');
 
-            // Verificar si el usuario tiene libros para devolver
             fetch(`https://ceiberapp-001-site1.ftempurl.com/api/Book/obtenerLibrosParaDevolver?userName=${storedUser.userName}`)
             //fetch(`http://localhost:5243/api/Book/obtenerLibrosParaDevolver?userName=${storedUser.userName}`)
                 .then(response => response.json())
@@ -81,7 +78,7 @@ const PaginaPrincipal: React.FC = () => {
                     if (data.success) {
                         const librosParaDevolver = data.libros;
                         const shouldEnableReturnLink = librosParaDevolver.length > 0;
-                        //setIsReturnLinkEnabled(shouldEnableReturnLink);
+
                         localStorage.setItem('isReturnLinkEnabled', shouldEnableReturnLink ? 'true' : 'false'); 
                     } else {
                         console.error('Error fetching returnable books:', data.message);
@@ -122,50 +119,71 @@ const PaginaPrincipal: React.FC = () => {
         localStorage.removeItem('isReturnLinkEnabled'); 
         setIsLoggedIn(false);
         setUserName('');
-        //setIsReturnLinkEnabled(false); 
     };
 
-    const handlePedir = (bookTitle: string, bookGender: string) => {
+    const handlePedir = (bookId: string, userName: string) => {
         if (!isLoggedIn) {
             alert("Por favor, inicie sesión primero.");
             return;
         }
+        
+        fetch('https://ceiberapp-001-site1.ftempurl.com/api/Book/book/${bookId}')
+        //fetch(`http://localhost:5243/api/Book/book/${bookId}`)
+        .then(response => response.json())
+        .then(bookData => {
+            if (bookData.success) {
+                const bookTitle = bookData.book.tittle; 
+            const bookGender = bookData.book.gender;
+
+                if (!bookTitle || !bookGender) {
+                    alert("No se pudieron obtener los detalles del libro.");
+                    return;
+                }
     
 
-        const solicitud = {
-            tipo: "Pedir",
-            fecha: new Date().toISOString(),
-            userName,
-            book: bookTitle,
-            gender: bookGender, 
-            observation: null
-        };
-    console.log("Datos de la solicitud:", solicitud);
-        fetch('https://ceiberapp-001-site1.ftempurl.com/api/Solicitud/crearSolicitud', {
-        //fetch('http://localhost:5243/api/Solicitud/crearSolicitud', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(solicitud),
-        })
-        .then(response => response.json())
-        .then(data => {
+                const solicitud = {
+                    tipo: "Pedir",
+                fecha: new Date().toISOString(),
+                userName,
+                bookId,
+                book: bookTitle,
+                gender: bookGender,
+                observation: null
+                    };
 
-            if (data.success) {
-                alert("Solicitud realizada con éxito.");
-                //setIsReturnLinkEnabled(true); // Habilitar el enlace de devolver libro
-                localStorage.setItem('isReturnLinkEnabled', 'true'); 
-                window.location.reload();
+                console.log("Datos de la solicitud:", solicitud);
+
+                fetch('https://ceiberapp-001-site1.ftempurl.com/api/Solicitud/crearSolicitud', {
+                //fetch('http://localhost:5243/api/Solicitud/crearSolicitud', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(solicitud),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Solicitud realizada con éxito.");
+                        localStorage.setItem('isReturnLinkEnabled', 'true');
+                        window.location.reload();
+                    } else {
+                        alert(`Error: ${data.message}`);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error realizando la solicitud:', error);
+                    alert("Error al realizar la solicitud.");
+                });
             } else {
-                alert(`Error: ${data.message}`);
+                alert("Error obteniendo los detalles del libro.");
             }
         })
         .catch(error => {
-            console.error('Error realizando la solicitud:', error);
-            alert("Error al realizar la solicitud.");
+            console.error('Error al obtener los detalles del libro:', error);
+            alert("Error al obtener los detalles del libro.");
         });
-    };
+};
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
@@ -177,7 +195,7 @@ const PaginaPrincipal: React.FC = () => {
         <div className='PaginaPrincipal'>
             <div className='encabezado'>
             
-            <div style={{height:"13vh",width:"16vw",display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"center",gap:"2em",border:"3px"}}>
+            <div style={{height:"13vh",width:"16vw",display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"center",gap:"2em"}}>
             <img style={{height:"13vh"}} src='PALPA.png'/>
                 {isAdmin && (
                         <Link style={{textDecoration:"none",color:"blue"}} to='/añadir-libros'>
@@ -216,7 +234,6 @@ const PaginaPrincipal: React.FC = () => {
                 <div style={{ height:"5vh",width:"9vw",display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"center"}}>
                     <Link 
                         style={{textDecoration:"none",color:"blue", 
-                            //pointerEvents: isReturnLinkEnabled ? 'auto' : 'none', opacity: isReturnLinkEnabled ? 1 : 0.5
                         }} 
                         to='/solicitud-libro'
                     >
@@ -250,7 +267,7 @@ const PaginaPrincipal: React.FC = () => {
                 <img style={{height:"18vh",width:"20vw"}} src='JORNADA.png'/>
                 <div  className='subcuerpo'>
                 {filteredBooks.map((book) => (
-                    <Card key={book.bookId} sx={{ border:"1px solid gray",boxShadow:"0px 4px 8px rgba(0, 0, 0, 0.2)",width: "20vw", height: "60vh", textAlign: "center", alignItems: "center", display: "flex", flexDirection: "column", margin: '10px' }}>
+                    <Card key={book.bookTitle} sx={{ border:"1px solid gray",boxShadow:"0px 4px 8px rgba(0, 0, 0, 0.2)",width: "20vw", height: "60vh", textAlign: "center", alignItems: "center", display: "flex", flexDirection: "column", margin: '10px' }}>
                         <CardMedia
                         component="img"
                             sx={{ width: "10vw", height: "25vh",objectFit: 'cover' }}
@@ -270,7 +287,7 @@ const PaginaPrincipal: React.FC = () => {
                             <span>{book.cantidad}</span>
                         </CardContent>
                         <CardActions>
-                            <Button onClick={() => handlePedir(book.tittle, book.gender)}>Pedir</Button>
+                            <Button onClick={() => handlePedir(book.bookId, userName)}>Pedir</Button>
                         </CardActions>
                     </Card>
                 ))}

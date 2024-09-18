@@ -47,7 +47,7 @@ const SolicitudLibro: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        setIsButtonDisabled(selectedBooks.length === 0); // Habilita el botón solo si hay libros seleccionados
+        setIsButtonDisabled(selectedBooks.length === 0); 
     }, [selectedBooks]);
 
     const handleCheckboxChange = (bookTitle: string, bookGender: string) => {
@@ -100,12 +100,10 @@ const SolicitudLibro: React.FC = () => {
             if (allSuccess) {
                 alert("Solicitudes de devolución realizadas con éxito.");
                 
-                // Actualizar la lista de libros pedidos para eliminar los libros seleccionados
                 setLibrosPedidos(prevLibros =>
                     prevLibros.filter(libro => !selectedBooks.some(selected => selected.title === libro.title && selected.gender === libro.gender))
                 );
                 
-                // Limpiar la selección de libros y la observación
                 setSelectedBooks([]);
                 setObservacion('');
     
@@ -144,7 +142,10 @@ const SolicitudLibro: React.FC = () => {
                                         onChange={() => handleCheckboxChange(libro.title, libro.gender)} 
                                      
                                     />
-                                    <span>{libro.title} {libro.gender}</span>
+                                    <span>
+                                        <span style={{fontSize:"15px"}}>{libro.title}</span>
+                                        <span style={{fontSize:"12px",fontWeight:"bold",color:"red"}}> ({libro.gender})</span>
+                                    </span>
                                     
                                 </div>
                             ))}
