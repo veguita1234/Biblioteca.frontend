@@ -160,11 +160,11 @@ const AñadirLibros: React.FC = () => {
     const handleUpdateClick = (book: any) => {
         setSelectedBookId(book.bookId);
         setBookDetails({
-            titulo: book.tittle,
-            autor: book.author,
-            genero: book.gender,
-            año: book.year.toString(),
-            cantidad: book.cantidad.toString(),
+            titulo: book.tittle || '', // Verificar si existe un valor, de lo contrario asignar una cadena vacía
+        autor: book.author || '',  // Verificar si existe un valor, de lo contrario asignar una cadena vacía
+        genero: book.gender || '', // Verificar si existe un valor, de lo contrario asignar una cadena vacía
+        año: book.year ? book.year.toString() : '',  // Si year existe, convertirlo a cadena, de lo contrario asignar una cadena vacía
+        cantidad: book.cantidad ? book.cantidad.toString() : ''
         });
         setSelectedImage(null);
         setImageUrl(book.imagen ? `https://ceiberapp-001-site1.ftempurl.com/api/Book/bookimage/${book.imagen}` : null);
