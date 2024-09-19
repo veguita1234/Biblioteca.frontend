@@ -10,6 +10,7 @@ import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import CardActions from '@mui/material/CardActions';
+import { AiOutlineDeliveredProcedure } from "react-icons/ai";
 
 import './PaginaPrincipal.css';
 
@@ -119,6 +120,7 @@ const PaginaPrincipal: React.FC = () => {
         localStorage.removeItem('isReturnLinkEnabled'); 
         setIsLoggedIn(false);
         setUserName('');
+        window.location.reload();
     };
 
     const handlePedir = (bookId: string, userName: string) => {
@@ -195,15 +197,21 @@ const PaginaPrincipal: React.FC = () => {
         <div className='PaginaPrincipal'>
             <div className='encabezado'>
             
-            <div style={{height:"13vh",width:"16vw",display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"center",gap:"2em"}}>
-            <img style={{height:"13vh"}} src='PALPA.png'/>
-                {isAdmin && (
-                        <Link style={{textDecoration:"none",color:"blue"}} to='/añadir-libros'>
-                            <FaBookMedical style={{fontSize:"20px"}}/>
-                            <span style={{fontSize:"20px"}}>Añadir Libros</span>
-                        </Link>
-                    )}
-                </div>
+            <div style={{height:"13vh",width:"30vw",display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"center",gap:"2em"}}>
+  <img style={{height:"13vh"}} src='PALPA.png'/>
+  
+  {isAdmin ? (
+    <div style={{display:"flex",flexDirection:"row",width:"30vw",gap:"2em"}}>
+      <Link style={{textDecoration:"none",color:"blue"}} to='/añadir-libros'>
+        <FaBookMedical style={{fontSize:"20px"}}/>
+        <span style={{fontSize:"20px"}}>Añadir Libros</span>
+      </Link>
+    </div>
+  ) : (
+    // div vacío para mantener el layout
+    <div style={{width:"30vw"}}></div>
+  )}
+</div>
                 <div style={{ position: 'relative', width: '30vw' }}>
                     <input
                         type="text"
@@ -253,7 +261,9 @@ const PaginaPrincipal: React.FC = () => {
                         </button>
                     ) : (
                         <div style={{ display: 'flex', alignItems: 'center',flexDirection:"column"}}>
-                            <span>Bienvenido {userName}</span>
+                            <span>
+                                <span style={{fontSize:"12px"}}>{userName}</span>
+                            </span>
                             <button onClick={handleLogout} style={{ marginLeft: '10px', background: 'none', border: 'none', color: 'red', cursor: 'pointer' }}>
                                 Cerrar Sesión
                             </button>
@@ -287,7 +297,14 @@ const PaginaPrincipal: React.FC = () => {
                             <span>{book.cantidad}</span>
                         </CardContent>
                         <CardActions>
-                            <Button onClick={() => handlePedir(book.bookId, userName)}>Pedir</Button>
+                            {/* Condicional para mostrar el botón según el estado del usuario */}
+                    {isAdmin ? (
+                       <Link to='/entregarlibros' style={{ textDecoration: 'none' }}>
+                            <Button>Entregar Libro</Button>
+                        </Link>
+                    ) : (
+                        <Button onClick={() => handlePedir(book.bookId, userName)}>Pedir</Button>
+                    )}
                         </CardActions>
                     </Card>
                 ))}

@@ -5,6 +5,7 @@ import PaginaPrincipal from './Pages/PaginaPrincipal/PaginaPrincipal';
 import './App.css';
 import AñadirLibros from './Pages/AñadirLibros/AñadirLibros';
 import SolicitudLibro from './Pages/SolicitudLibro/SolicitudLibro';
+import EntregarLibros from './Pages/EntregarLibros/EntregarLibros';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           {/*<Route path='/login' element={<Login />}></Route>*/}
           <Route path='/añadir-libros' element={<AñadirLibros />}></Route>
           <Route path='/solicitud-libro' element={<SolicitudLibro />}></Route>
+          <Route path='/entregarlibros' element={<EntregarLibros />}></Route>
         </Routes>
       </div>
     </Router>
